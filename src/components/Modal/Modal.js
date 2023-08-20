@@ -9,13 +9,13 @@ const modalRoot = document.getElementById('modal');
 export class Modal extends Component {
   handleKeyDown = e => {
     if (e.code === 'Escape') {
-      this.props.onCloys();
+      this.props.onClose();
     }
   };
 
   onClickOverlay = e => {
     if (e.currentTarget === e.target) {
-      this.props.onCloys();
+      this.props.onClose();
     }
   };
   componentDidMount() {

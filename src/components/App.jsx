@@ -65,7 +65,7 @@ export class App extends Component {
     this.setState({ modal: { isOpen: true, imgModal: img, tags } });
   };
 
-  onClickModalCloys = () => {
+  onClickModalClose = () => {
     this.setState({ modal: { isOpen: false, imgModal: null, tags: '' } });
   };
 
@@ -79,20 +79,18 @@ export class App extends Component {
       <div className={css.app}>
         <SearchBar onSubmit={this.onSubmit} />
         {img.length === 0 && (
-          <h1 className={css.title}>
-            Your pictures will be here if you enter the data in the form 🥰
-          </h1>
+          <h1 className={css.title}>Enter the data in the field</h1>
         )}
         {modal.isOpen && (
           <Modal
-            onCloys={this.onClickModalCloys}
+            onClose={this.onClickModalClose}
             imgModal={modal.imgModal}
             modalTags={modal.tags}
           />
         )}
         {error && (
           <p className={css.title}>
-            Oops, some error. Please, try again later. Error: {error}
+             Please, try again later. Error: {error}
           </p>
         )}
         <ImageGallery openModal={this.onClickModalOpen} items={img} />
