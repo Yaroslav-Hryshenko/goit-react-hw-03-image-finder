@@ -1,7 +1,7 @@
 import { Component } from 'react';
 
 import { SearchBar } from './Searchbar/Searchbar';
-import { Button } from './Button/Button';
+// import { Button } from './Button/Button';
 import Api from './Api';
 import { Loader } from './Loader/Loader';
 import { Modal } from './Modal/Modal';
@@ -32,26 +32,26 @@ export class App extends Component {
     const { name, page } = this.state;
 
     this.setState({ isLoading: true });
-    await Api.images(name, page)
-      .then(images => {
-        if (images.hits.length === 0) {
-          alert(
-            `Sorry Your ${name} was not found.`
-          );
-        }
-        this.setState(prevState => ({
-          img: page === 1 ? images.hits : [...prevState.img, ...images.hits],
-          totalPages: Math.floor(images.totalHits / 12),
-          isLoading: false,
-        }));
-      })
-      .catch(error => this.setState({ error: error.message }));
+    try {
+      const images = await Api.images(name, page);
+
+      if (images.hits.length === 0) {
+        alert(`Sorry, ${name} was not found.`);
+      }
+
+      this.setState(prevState => ({
+        img: [...prevState.img, ...images.hits],
+        totalPages: Math.floor(images.totalHits / 12),
+      }));
+    } catch (error) {
+      this.setState({ error: error.message });
+    } finally {
+      this.setState({ isLoading: false });
+    }
   };
 
   onSubmit = name => {
-    this.setState({ name, page: 1 }, () => {
-      this.scrollToTop();
-    });
+    this.setState({ name, page: 1, img: [] });
   };
 
   scrollToTop = () => {
@@ -75,6 +75,16 @@ export class App extends Component {
 
   render() {
     const { img, page, modal, isLoading, error, totalPages } = this.state;
+    const Button = ({ img, onClick, page, totalPages }) => (
+      <>
+        {img.length > 0 && page <= totalPages && (
+          <button type="button" className={css.btn} onClick={onClick}>
+            Load more
+          </button>
+        )}
+      </>
+    );
+
     return (
       <div className={css.app}>
         <SearchBar onSubmit={this.onSubmit} />
@@ -89,9 +99,7 @@ export class App extends Component {
           />
         )}
         {error && (
-          <p className={css.title}>
-             Please, try again later. Error: {error}
-          </p>
+          <p className={css.title}>Please, try again later. Error: {error}</p>
         )}
         <ImageGallery openModal={this.onClickModalOpen} items={img} />
         <Button
