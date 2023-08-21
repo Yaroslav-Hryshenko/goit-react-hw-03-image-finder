@@ -75,7 +75,7 @@ export class App extends Component {
 
   render() {
     const { img, page, modal, isLoading, error, totalPages } = this.state;
-    const Button = ({ img, onClick, page, totalPages }) => (
+    const Button = ({  onClick,}) => (
       <>
         {img.length > 0 && page <= totalPages && (
           <button type="button" className={css.btn} onClick={onClick}>
@@ -104,9 +104,7 @@ export class App extends Component {
         <ImageGallery openModal={this.onClickModalOpen} items={img} />
         <Button
           onClick={this.clickBtn}
-          img={img}
-          totalPages={totalPages}
-          page={page}
+        
         />
         <Loader isLoading={isLoading} />
       </div>
