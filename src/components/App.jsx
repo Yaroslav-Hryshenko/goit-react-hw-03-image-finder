@@ -7,6 +7,7 @@ import { Loader } from './Loader/Loader';
 import { Modal } from './Modal/Modal';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 
+
 import css from './App.module.css';
 
 export class App extends Component {
