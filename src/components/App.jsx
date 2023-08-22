@@ -76,15 +76,7 @@ export class App extends Component {
 
   render() {
     const { img, page, modal, isLoading, error, totalPages } = this.state;
-    const Button = ({  onClick,}) => (
-      <>
-        {img.length > 0 && page <= totalPages && (
-          <button type="button" className={css.btn} onClick={onClick}>
-            Load more
-          </button>
-        )}
-      </>
-    );
+    
 
     return (
       <div className={css.app}>
@@ -103,10 +95,11 @@ export class App extends Component {
           <p className={css.title}>Please, try again later. Error: {error}</p>
         )}
         <ImageGallery openModal={this.onClickModalOpen} items={img} />
-        <Button
-          onClick={this.clickBtn}
-        
-        />
+        {img.length > 0 && page <= totalPages && (
+          <button type="button" className={css.btn} onClick={this.clickBtn}>
+            Load more
+          </button>
+        )}
         <Loader isLoading={isLoading} />
       </div>
     );
